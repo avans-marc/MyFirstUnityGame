@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Experimental.GlobalIllumination;
 
-public class PlayerController : MonoBehaviour
+public partial class PlayerController : MonoBehaviour
 {
     private SpriteRenderer spriteRenderer;
     private Animator animator;
@@ -14,7 +14,6 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 2f;
     public float jumpForce = 2f;
 
-    private bool isMoving = false;
     private Move currentMove = Move.None;
 
     private void Start()
@@ -53,7 +52,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && currentMove != Move.Jump)
         {
-            var newPositionX = this.transform.position.x + (CurrentDirection == Direction.Left ? -moveSpeed : moveSpeed);
+            var newPositionX = this.transform.position.x + (CurrentDirection == MoveDirection.Left ? -moveSpeed : moveSpeed);
 
             this.transform
                 .DOJump(new Vector3(newPositionX, this.transform.position.y), jumpForce, 1, 1)
@@ -65,19 +64,17 @@ public class PlayerController : MonoBehaviour
     private void StartMovement()
     {
         animator.enabled = true;
-        isMoving = true;
     }
 
     private void CompleteMovement()
     {
         animator.enabled = false;
-        isMoving = false;
         currentMove = Move.None;
     }
 
-    private Direction CurrentDirection
+    public MoveDirection CurrentDirection
     {
-        get { return spriteRenderer.flipX ? Direction.Left : Direction.Right; }
+        get { return spriteRenderer.flipX ? MoveDirection.Left : MoveDirection.Right; }
     }
 
 
@@ -87,11 +84,5 @@ public class PlayerController : MonoBehaviour
         Jump,
         Left,
         Right,
-    }
-
-    private enum Direction
-    {
-        Left,
-        Right
     }
 }
