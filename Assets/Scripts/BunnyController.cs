@@ -4,7 +4,6 @@ using UnityEngine.InputSystem;
 
 public class BunnyController : MonoBehaviour
 {
-    private float jumpForce = 5f;
     private SpriteRenderer spriteRenderer;
 
     public Sprite Idle;
@@ -14,9 +13,24 @@ public class BunnyController : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = Idle;
+
+        Debug.Log("Bunny instantiated");
     }
 
-    void OnCollisionEnter2D(Collision2D other)
+    public void OnMouseUpAsButton()
+    {
+        Debug.Log("Bunny clicked!");
+    }
+
+    public void OnBecameInvisible()
+    {
+        Debug.Log("Bunny exited screen");
+        SendMessageUpwards("OnBunnyExit");
+        
+        Destroy(this);
+    }
+
+    public void OnCollisionEnter2D(Collision2D other)
     {
         Debug.Log($"Bunny [{this.GetInstanceID()}] collided with {other.gameObject.name}");
 

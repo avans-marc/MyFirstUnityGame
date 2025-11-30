@@ -8,7 +8,7 @@ public class PrefabFactory : MonoBehaviour
     public GameObject prefab;
     public GameObject player;
 
-    public float spawnDistanceMin = 2f;
+    public float spawnDistanceMin = -5f;
     public float spawnDistanceMax = 5f;
 
     public float groundY = 0; // Set this to your ground level
@@ -22,18 +22,24 @@ public class PrefabFactory : MonoBehaviour
         }
     }
 
+    public void OnBunnyExit()
+    {
+        Debug.Log("Bunny exit triggered on the prefabfactory");
+        CreatePrefabInstance();
+    }
+
     public void CreatePrefabInstance()
     {
         // Random distance between min and max
         float randomDistance = UnityEngine.Random.Range(spawnDistanceMin, spawnDistanceMax);
-
         
         Vector3 spawnPosition = new Vector3(
-            player.transform.position.x + randomDistance,
+            randomDistance,
             groundY,
-            player.transform.position.z
+            0
         );
-
-        Instantiate(prefab, spawnPosition, Quaternion.identity);
+        
+        
+        Instantiate(prefab, spawnPosition, quaternion.identity, this.transform );
     }
 }

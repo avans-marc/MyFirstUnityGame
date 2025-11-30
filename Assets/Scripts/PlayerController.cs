@@ -11,11 +11,11 @@ public class PlayerController : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Animator animator;
 
-    public float moveSpeed = 5f;
-    public float jumpForce = 10f;
+    public float moveSpeed = 2f;
+    public float jumpForce = 2f;
 
     private bool isMoving = false;
-    private CurrentMove currentMove = CurrentMove.None;
+    private Move currentMove = Move.None;
 
     private void Start()
     {
@@ -27,34 +27,36 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         // Horizontal movement
-        if (Input.GetKey(KeyCode.D) && currentMove != CurrentMove.Right)
+        if (Input.GetKey(KeyCode.D) && currentMove != Move.Right)
         {
-            currentMove = CurrentMove.Right;
+            currentMove = Move.Right;
             spriteRenderer.flipX = false;
 
             this.transform
-                .DOMoveX(this.transform.position.x + 1, 1)
+                .DOMoveX(this.transform.position.x + moveSpeed, 1)
                 .SetEase(Ease.Linear)
                 .OnStart(StartMovement)
                 .OnComplete(CompleteMovement);
         }
 
-        if (Input.GetKey(KeyCode.A) && currentMove != CurrentMove.Left)
+        if (Input.GetKey(KeyCode.A) && currentMove != Move.Left)
         {
             spriteRenderer.flipX = true;
-            currentMove = CurrentMove.Left;
+            currentMove = Move.Left;
 
             var transform = this.transform
-               .DOMoveX(this.transform.position.x - 1, 1)
+               .DOMoveX(this.transform.position.x - moveSpeed, 1)
                .SetEase(Ease.Linear)
                .OnStart(StartMovement)
                .OnComplete(CompleteMovement);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && currentMove != CurrentMove.Jump)
+        if (Input.GetKeyDown(KeyCode.Space) && currentMove != Move.Jump)
         {
+            var newPositionX = this.transform.position.x + (CurrentDirection == Direction.Left ? -moveSpeed : moveSpeed);
+
             this.transform
-                .DOJump(new Vector3(this.transform.position.x + 2, this.transform.position.y), jumpForce, 1, 1)
+                .DOJump(new Vector3(newPositionX, this.transform.position.y), jumpForce, 1, 1)
                 .OnStart(StartMovement)
                 .OnComplete(CompleteMovement);
         }
@@ -70,14 +72,26 @@ public class PlayerController : MonoBehaviour
     {
         animator.enabled = false;
         isMoving = false;
-        currentMove = CurrentMove.None;
+        currentMove = Move.None;
     }
 
-    private enum CurrentMove
+    private Direction CurrentDirection
+    {
+        get { return spriteRenderer.flipX ? Direction.Left : Direction.Right; }
+    }
+
+
+    private enum Move
     {
         None,
         Jump,
         Left,
         Right,
+    }
+
+    private enum Direction
+    {
+        Left,
+        Right
     }
 }
