@@ -29,19 +29,19 @@ public class BunnyController : MonoBehaviour
         playerTransform = player.GetComponent<Transform>();
         playerController = player.GetComponent<PlayerController>();
 
-        Debug.Log("Bunny instantiated");
+        Debug.Log($"Bunny [{this.GetInstanceID()}] instantiated");
     }
 
     public void OnMouseUpAsButton()
     {
-        Debug.Log("Bunny clicked!");
+        Debug.Log($"Bunny [{this.GetInstanceID()}] clicked");
     }
 
     public void OnBecameInvisible()
     {
         Debug.Log($"Bunny [{this.GetInstanceID()}] became invisible");
         OnBunnyExit?.Invoke();
-        Destroy(this.gameObject, 500);
+        Destroy(this.gameObject, 5);
     }
 
     
