@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using TMPro;
 using UnityEngine;
@@ -24,5 +25,13 @@ public class ScoreController : MonoBehaviour
     {
         this.CurrentScore++;
         this.ScoreTextBox.text = $"Score: {this.CurrentScore}";
+
+        // Scale punch
+        this.ScoreTextBox.transform.DOPunchScale(Vector3.one * 0.3f, 0.5f, 10, 1);
+
+        // Color flash
+        this.ScoreTextBox
+            .DOColor(Color.yellow, 0.2f)
+            .OnComplete(() => this.ScoreTextBox.DOColor(Color.red, 0.2f));
     }
 }

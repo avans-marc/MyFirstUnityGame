@@ -346,6 +346,10 @@ PrefabInstance:
       propertyPath: m_Offset.y
       value: -0.05101325
       objectReference: {fileID: 0}
+    - target: {fileID: 4862891361317554630, guid: 822fba598ede7584b95fdb9b882688da, type: 3}
+      propertyPath: m_Constraints
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 6723383770096131898, guid: 822fba598ede7584b95fdb9b882688da, type: 3}
       propertyPath: m_Name
       value: Player
