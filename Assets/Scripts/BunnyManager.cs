@@ -18,14 +18,9 @@ public class BunnyManager : MonoBehaviour
     public float groundY = 0; // Set this to your ground level
 
 
-    private PlayerController playerController;
-    
-
-
     public void Start()
     {
-        playerController = player.GetComponent<PlayerController>();
-        CreatePrefabInstance();
+        //CreatePrefabInstance();
     }
 
     public void Update()
@@ -40,6 +35,22 @@ public class BunnyManager : MonoBehaviour
     {
         CreatePrefabInstance();
         this.OnBunnyExit?.Invoke();
+    }
+
+    public GameObject PlaceNewBunny()
+    {
+        Debug.Log($"Place new bunny");
+
+        //placableObjectsUI.SetActive(false);
+        GameObject bunny = Instantiate(prefab, Vector3.zero, Quaternion.identity);
+
+        // Add the component to bunnies dragged from the menu
+        var bunnyController = bunny.GetComponent<BunnyController>();
+        bunnyController.player = player;
+        bunnyController.OnBunnyExit += HandleBunnyExit;
+        bunnyController.StartDragging();
+
+        return bunny;
     }
 
     public void CreatePrefabInstance()
@@ -57,5 +68,8 @@ public class BunnyManager : MonoBehaviour
         bunnyController.OnBunnyExit += HandleBunnyExit;
     }
 
-
+    public void FinishedDraggingObject2D(DraggableObject draggableObject)
+    {
+        Debug.Log($"Finished dragging");
+    }
 }

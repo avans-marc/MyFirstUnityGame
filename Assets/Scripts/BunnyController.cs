@@ -8,33 +8,25 @@ using UnityEngine.InputSystem;
 
 public class BunnyController : MonoBehaviour
 {
-    
-    
-    public GameObject player;
-
     public event Action OnBunnyExit;
 
-    public Sprite Idle;
-    public Sprite Jump;
+    public GameObject player;
+    public Sprite idle;
+    public Sprite jump;
 
     private SpriteRenderer spriteRenderer;
     private Transform playerTransform;
-    private PlayerController playerController;
+
+    private bool isDragging;
 
     private void Start()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        spriteRenderer.sprite = Idle;
-
-        playerTransform = player.GetComponent<Transform>();
-        playerController = player.GetComponent<PlayerController>();
-
         Debug.Log($"Bunny [{this.GetInstanceID()}] instantiated");
-    }
 
-    public void OnMouseUpAsButton()
-    {
-        Debug.Log($"Bunny [{this.GetInstanceID()}] clicked");
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        playerTransform = player.GetComponent<Transform>();
+
+        spriteRenderer.sprite = idle;
     }
 
     public void OnBecameInvisible()
@@ -44,11 +36,13 @@ public class BunnyController : MonoBehaviour
         Destroy(this.gameObject, 5);
     }
 
-    
-
     public void Update()
     {
-        this.spriteRenderer.flipX = this.playerTransform.position.x > this.transform.position.x;
+
+        if (isDragging)
+            transform.position = GetMousePosition();
+        else
+            this.spriteRenderer.flipX = this.playerTransform.position.x > this.transform.position.x;
     }
 
     public void OnCollisionEnter2D(Collision2D other)
@@ -57,12 +51,33 @@ public class BunnyController : MonoBehaviour
 
         if (!this.gameObject.IsDestroyed() && other.gameObject.name == "Player")
         {
-            spriteRenderer.sprite = Jump;
+            spriteRenderer.sprite = jump;
 
             this.transform.DOJump(new Vector3(this.transform.position.x + (this.playerTransform.position.x > this.transform.position.x ? -2 : 2), this.transform.position.y), 1, 1, 1).OnComplete(() =>
             {
-                spriteRenderer.sprite = Idle;
+                spriteRenderer.sprite = idle;
             });
         }
+    }
+
+
+    public void StartDragging()
+    {
+        Debug.Log("Start dragging");
+        isDragging = true;
+    }
+
+
+    public void StopDragging()
+    {
+        Debug.Log("Stop dragging");
+        isDragging = false;
+    }
+
+    private Vector3 GetMousePosition()
+    {
+        Vector3 positionInWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        positionInWorld.z = 0;
+        return positionInWorld;
     }
 }

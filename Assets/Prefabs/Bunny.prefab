@@ -175,5 +175,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcd7b713b3ada6849b3e94585a68e74d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Idle: {fileID: 21300000, guid: e0aab8ef7a3e2664c9a41888a276b862, type: 3}
-  Jump: {fileID: 21300000, guid: ddacff8b75af3d345b57a4a28c263042, type: 3}
+  player: {fileID: 6723383770096131898, guid: 822fba598ede7584b95fdb9b882688da, type: 3}
+  idle: {fileID: 21300000, guid: e0aab8ef7a3e2664c9a41888a276b862, type: 3}
+  jump: {fileID: 21300000, guid: ddacff8b75af3d345b57a4a28c263042, type: 3}
+  drag: {fileID: 21300000, guid: ddacff8b75af3d345b57a4a28c263042, type: 3}
